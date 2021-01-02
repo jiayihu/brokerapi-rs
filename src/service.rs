@@ -31,6 +31,7 @@ pub struct ServiceInstanceRequestBody {
 pub struct CreatedServiceIstance {
     dashboard_url: Option<String>,
     operation: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     metadata: Option<ServiceInstanceMetadata>,
 }
 
@@ -62,9 +63,13 @@ pub struct ServiceFetchParams {
 #[derive(Serialize, Default, Debug)]
 #[allow(unused)]
 pub struct ServiceIstance {
+    #[serde(skip_serializing_if = "Option::is_none")]
     service_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     dashboard_url: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     operation: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     metadata: Option<ServiceInstanceMetadata>,
 }
 

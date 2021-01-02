@@ -15,14 +15,20 @@ pub struct Service {
     name: String,
     id: String,
     description: String,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     tags: Vec<String>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     requires: Vec<Permission>,
     bindable: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
     instances_retrievable: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     bindings_retrievable: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     allow_context_updates: Option<bool>,
-    metadata: Option<HashMap<String, String>>,
-    // dashboard_client: Option<DashboardClient>
+    #[serde(skip_serializing_if = "HashMap::is_empty")]
+    metadata: HashMap<String, String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     plan_updateable: Option<bool>,
     plans: Vec<ServicePlan>,
 }
@@ -41,12 +47,18 @@ pub struct ServicePlan {
     id: String,
     name: String,
     description: String,
-    metadata: Option<HashMap<String, String>>,
+    #[serde(skip_serializing_if = "HashMap::is_empty")]
+    metadata: HashMap<String, String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     free: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     bindable: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     plan_updateable: Option<bool>,
     // schemas: Option<Schemas>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     maximum_polling_duration: Option<u64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     maintenance_info: Option<MaintenanceInfo>,
 }
 

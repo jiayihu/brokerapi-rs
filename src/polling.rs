@@ -14,8 +14,11 @@ pub struct LastOperationParams {
 #[derive(Serialize, Default, Debug)]
 pub struct ServiceInstanceLastOp {
     state: LastOperationState,
+    #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     instance_usable: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     update_repeatable: Option<bool>,
 }
 
@@ -51,6 +54,7 @@ pub async fn get_service_instance_last_operation(
 #[derive(Serialize, Default, Debug)]
 struct ServiceBindingLastOp {
     state: LastOperationState,
+    #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
 }
 

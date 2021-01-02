@@ -42,11 +42,17 @@ pub struct BindResource {
 #[derive(Serialize, Default, Debug)]
 #[allow(unused)]
 pub struct Binding {
+    #[serde(skip_serializing_if = "Option::is_none")]
     metadata: Option<BindingMetadata>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     credentials: Option<HashMap<String, String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     syslog_drain_url: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     route_service_url: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     volume_mounts: Option<VolumeMount>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     endpoints: Option<Vec<Endpoint>>,
 }
 
