@@ -1,4 +1,4 @@
-use actix_web::{web, HttpRequest, HttpResponse, Responder};
+use actix_web::{web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -50,16 +50,13 @@ pub struct ServicePlan {
     maintenance_info: Option<MaintenanceInfo>,
 }
 
-#[derive(Serialize, Deserialize, Default)]
+#[derive(Serialize, Deserialize, Debug, Default)]
 pub struct MaintenanceInfo {
     version: String,
     description: Option<String>,
 }
 
-pub async fn get_catalog(
-    _req: HttpRequest,
-    provider: web::Data<CatalogProvider>,
-) -> impl Responder {
+pub async fn get_catalog(provider: web::Data<CatalogProvider>) -> impl Responder {
     HttpResponse::Ok().json(provider.get_catalog())
 }
 

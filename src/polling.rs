@@ -2,7 +2,7 @@ use actix_web::{web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 
 /// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#request-1
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 #[allow(unused)]
 pub struct LastOperationParams {
     service_id: Option<String>,
@@ -11,7 +11,7 @@ pub struct LastOperationParams {
 }
 
 /// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#response-1
-#[derive(Serialize, Default)]
+#[derive(Serialize, Default, Debug)]
 pub struct ServiceInstanceLastOp {
     state: LastOperationState,
     description: Option<String>,
@@ -19,7 +19,7 @@ pub struct ServiceInstanceLastOp {
     update_repeatable: Option<bool>,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 #[serde(rename_all = "lowercase")]
 #[allow(unused)]
 pub enum LastOperationState {
@@ -37,8 +37,10 @@ impl Default for LastOperationState {
 
 pub async fn get_service_instance_last_operation(
     _instance_id: web::Path<String>,
-    web::Query(_query): web::Query<LastOperationParams>,
+    web::Query(params): web::Query<LastOperationParams>,
 ) -> impl Responder {
+    log::info!("params {:?}", params);
+
     let mut response = ServiceInstanceLastOp::default();
     response.state = LastOperationState::Succeeded;
 
@@ -46,7 +48,7 @@ pub async fn get_service_instance_last_operation(
 }
 
 /// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#response-2
-#[derive(Serialize, Default)]
+#[derive(Serialize, Default, Debug)]
 struct ServiceBindingLastOp {
     state: LastOperationState,
     description: Option<String>,
@@ -54,8 +56,10 @@ struct ServiceBindingLastOp {
 
 pub async fn get_service_binding_state(
     web::Path((_instance_id, _binding_id)): web::Path<(String, String)>,
-    web::Query(_query): web::Query<LastOperationParams>,
+    web::Query(params): web::Query<LastOperationParams>,
 ) -> impl Responder {
+    log::info!("params {:?}", params);
+
     let mut response = ServiceBindingLastOp::default();
     response.state = LastOperationState::Succeeded;
 

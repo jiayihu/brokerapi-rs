@@ -6,14 +6,14 @@ use std::collections::HashMap;
 use crate::catalog::MaintenanceInfo;
 
 /// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#parameters-2
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 #[allow(unused)]
 pub struct ProvisionParams {
     accepts_incomplete: Option<bool>,
 }
 
 /// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#body-3
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 #[allow(unused)]
 pub struct ServiceInstanceRequestBody {
     service_id: String,
@@ -26,7 +26,7 @@ pub struct ServiceInstanceRequestBody {
 }
 
 /// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#body-4
-#[derive(Serialize, Default)]
+#[derive(Serialize, Default, Debug)]
 #[allow(unused)]
 pub struct CreatedServiceIstance {
     dashboard_url: Option<String>,
@@ -34,7 +34,7 @@ pub struct CreatedServiceIstance {
     metadata: Option<ServiceInstanceMetadata>,
 }
 
-#[derive(Serialize, Default)]
+#[derive(Serialize, Default, Debug)]
 #[allow(unused)]
 pub struct ServiceInstanceMetadata {
     labels: HashMap<String, String>,
@@ -42,14 +42,16 @@ pub struct ServiceInstanceMetadata {
 
 pub async fn put_service_instance(
     _instance_id: web::Path<String>,
-    web::Query(_query): web::Query<ProvisionParams>,
-    web::Json(_info): web::Json<ServiceInstanceRequestBody>,
+    web::Query(params): web::Query<ProvisionParams>,
+    web::Json(body): web::Json<ServiceInstanceRequestBody>,
 ) -> impl Responder {
+    log::info!("params {:?}, body:\n{:#?}", params, body);
+
     HttpResponse::Created().json(CreatedServiceIstance::default())
 }
 
 /// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#parameters-3
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 #[allow(unused)]
 pub struct ServiceFetchParams {
     service: Option<String>,
@@ -57,7 +59,7 @@ pub struct ServiceFetchParams {
 }
 
 /// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#body-5
-#[derive(Serialize, Default)]
+#[derive(Serialize, Default, Debug)]
 #[allow(unused)]
 pub struct ServiceIstance {
     service_id: Option<String>,
@@ -68,13 +70,15 @@ pub struct ServiceIstance {
 
 pub async fn get_service_instance(
     _instance_id: web::Path<String>,
-    web::Query(_query): web::Query<ServiceFetchParams>,
+    web::Query(params): web::Query<ServiceFetchParams>,
 ) -> impl Responder {
+    log::info!("params {:?}", params);
+
     HttpResponse::Ok().json(ServiceIstance::default())
 }
 
 /// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#body-7
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 #[allow(unused)]
 pub struct ServiceUpdateRequestBody {
     service_id: String,
@@ -85,7 +89,7 @@ pub struct ServiceUpdateRequestBody {
     maintenance_info: Option<MaintenanceInfo>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 #[allow(unused)]
 pub struct PreviousValues {
     service_id: Option<String>,
@@ -97,14 +101,16 @@ pub struct PreviousValues {
 
 pub async fn patch_service_instance(
     _instance_id: web::Path<String>,
-    web::Query(_query): web::Query<ProvisionParams>,
-    web::Json(_info): web::Json<ServiceUpdateRequestBody>,
+    web::Query(params): web::Query<ProvisionParams>,
+    web::Json(body): web::Json<ServiceUpdateRequestBody>,
 ) -> impl Responder {
+    log::info!("params {:?}, body:\n{:#?}", params, body);
+
     HttpResponse::Ok().json(CreatedServiceIstance::default())
 }
 
 /// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#parameters-8
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 #[allow(unused)]
 pub struct ServiceDeleteParams {
     service_id: String,
@@ -114,7 +120,9 @@ pub struct ServiceDeleteParams {
 
 pub async fn delete_service_instance(
     _instance_id: web::Path<String>,
-    web::Query(_query): web::Query<ServiceDeleteParams>,
+    web::Query(params): web::Query<ServiceDeleteParams>,
 ) -> impl Responder {
+    log::info!("params {:?}", params);
+
     HttpResponse::Ok().json(json!({}))
 }

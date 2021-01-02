@@ -13,14 +13,14 @@ pub enum BindingType {
 }
 
 /// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#parameters-5
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 #[allow(unused)]
 pub struct ProvisionParams {
     accepts_incomplete: Option<bool>,
 }
 
 /// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#body-8
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 #[allow(unused)]
 pub struct BindingRequestBody {
     service_id: String,
@@ -31,7 +31,7 @@ pub struct BindingRequestBody {
 }
 
 /// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#bind-resource-object
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 #[allow(unused)]
 pub struct BindResource {
     app_guid: Option<String>,
@@ -39,7 +39,7 @@ pub struct BindResource {
 }
 
 /// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#body-9
-#[derive(Serialize, Default)]
+#[derive(Serialize, Default, Debug)]
 #[allow(unused)]
 pub struct Binding {
     metadata: Option<BindingMetadata>,
@@ -50,13 +50,13 @@ pub struct Binding {
     endpoints: Option<Vec<Endpoint>>,
 }
 
-#[derive(Serialize, Default)]
+#[derive(Serialize, Default, Debug)]
 #[allow(unused)]
 pub struct BindingMetadata {
     expires_at: String,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 #[allow(unused)]
 pub struct VolumeMount {
     driver: String,
@@ -66,7 +66,7 @@ pub struct VolumeMount {
     device: Device,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 #[serde(rename_all = "lowercase")]
 #[allow(unused)]
 pub enum VolumeMode {
@@ -74,21 +74,21 @@ pub enum VolumeMode {
     RW,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 #[serde(rename_all = "snake_case")]
 #[allow(unused)]
 pub enum DeviceType {
     Shared,
 }
 
-#[derive(Serialize, Default)]
+#[derive(Serialize, Default, Debug)]
 #[allow(unused)]
 pub struct Device {
     volume_id: String,
     mount_config: Option<HashMap<String, String>>,
 }
 
-#[derive(Serialize, Default)]
+#[derive(Serialize, Default, Debug)]
 #[allow(unused)]
 pub struct Endpoint {
     host: String,
@@ -96,7 +96,7 @@ pub struct Endpoint {
     protocol: Option<Protocol>,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 #[serde(rename_all = "lowercase")]
 #[allow(unused)]
 pub enum Protocol {
@@ -113,14 +113,16 @@ impl Default for Protocol {
 
 pub async fn put_binding(
     web::Path((_instance_id, _binding_id)): web::Path<(String, String)>,
-    web::Query(_query): web::Query<ProvisionParams>,
-    web::Json(_info): web::Json<BindingRequestBody>,
+    web::Query(params): web::Query<ProvisionParams>,
+    web::Json(body): web::Json<BindingRequestBody>,
 ) -> impl Responder {
+    log::info!("params {:?}, body:\n{:#?}", params, body);
+
     HttpResponse::Created().json(Binding::default())
 }
 
 /// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#parameters-6
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 #[allow(unused)]
 pub struct BindingFetchParams {
     service: Option<String>,
@@ -129,14 +131,18 @@ pub struct BindingFetchParams {
 
 pub async fn get_binding(
     web::Path((_instance_id, _binding_id)): web::Path<(String, String)>,
-    web::Query(_query): web::Query<BindingFetchParams>,
+    web::Query(params): web::Query<BindingFetchParams>,
 ) -> impl Responder {
+    log::info!("params {:?}", params);
+
     HttpResponse::Ok().json(Binding::default())
 }
 
 pub async fn delete_binding(
     web::Path((_instance_id, _binding_id)): web::Path<(String, String)>,
-    web::Query(_query): web::Query<BindingFetchParams>,
+    web::Query(params): web::Query<BindingFetchParams>,
 ) -> impl Responder {
+    log::info!("params {:?}", params);
+
     HttpResponse::Ok().json(json!({}))
 }

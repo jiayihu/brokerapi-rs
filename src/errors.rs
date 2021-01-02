@@ -22,6 +22,7 @@ pub enum ErrorCode {
 }
 
 impl OSBError {
+    #[allow(unused)]
     fn new(error: ErrorCode, desc: String) -> Self {
         OSBError {
             error,
