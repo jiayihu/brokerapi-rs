@@ -7,5 +7,5 @@ Add the dependency to `Cargo.toml`
 
 ```toml
 [dependencies]
-coap = "0.1.0"
+brokerapi = "0.1.0"
 ```
