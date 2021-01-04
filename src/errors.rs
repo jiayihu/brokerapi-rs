@@ -3,12 +3,15 @@ use actix_web::http::StatusCode;
 use serde::Serialize;
 use std::fmt;
 
+/// Service Broker Errors
+///
+/// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#service-broker-errors>
 #[derive(Serialize, Debug)]
 pub struct OSBError {
-    error: ErrorCode,
-    description: String,
-    instance_usable: bool,
-    update_repeatable: bool,
+    pub error: ErrorCode,
+    pub description: String,
+    pub instance_usable: bool,
+    pub update_repeatable: bool,
 }
 
 #[allow(dead_code)]

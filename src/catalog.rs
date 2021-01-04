@@ -4,33 +4,33 @@ use std::collections::HashMap;
 
 #[derive(Serialize, Default)]
 pub struct Catalog {
-    services: Vec<Service>,
+    pub services: Vec<Service>,
 }
 
 /// Service Offering
 ///
-/// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#service-offering-object
+/// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#service-offering-object>
 #[derive(Serialize, Default)]
 pub struct Service {
-    name: String,
-    id: String,
-    description: String,
+    pub name: String,
+    pub id: String,
+    pub description: String,
     #[serde(skip_serializing_if = "Vec::is_empty")]
-    tags: Vec<String>,
+    pub tags: Vec<String>,
     #[serde(skip_serializing_if = "Vec::is_empty")]
-    requires: Vec<Permission>,
-    bindable: bool,
+    pub requires: Vec<Permission>,
+    pub bindable: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
-    instances_retrievable: Option<bool>,
+    pub instances_retrievable: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    bindings_retrievable: Option<bool>,
+    pub bindings_retrievable: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    allow_context_updates: Option<bool>,
+    pub allow_context_updates: Option<bool>,
     #[serde(skip_serializing_if = "HashMap::is_empty")]
-    metadata: HashMap<String, String>,
+    pub metadata: HashMap<String, String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    plan_updateable: Option<bool>,
-    plans: Vec<ServicePlan>,
+    pub plan_updateable: Option<bool>,
+    pub plans: Vec<ServicePlan>,
 }
 
 #[derive(Serialize)]
@@ -44,22 +44,22 @@ pub enum Permission {
 
 #[derive(Serialize, Default)]
 pub struct ServicePlan {
-    id: String,
-    name: String,
-    description: String,
+    pub id: String,
+    pub name: String,
+    pub description: String,
     #[serde(skip_serializing_if = "HashMap::is_empty")]
-    metadata: HashMap<String, String>,
+    pub metadata: HashMap<String, String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    free: Option<bool>,
+    pub free: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    bindable: Option<bool>,
+    pub bindable: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    plan_updateable: Option<bool>,
+    pub plan_updateable: Option<bool>,
     // schemas: Option<Schemas>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    maximum_polling_duration: Option<u64>,
+    pub maximum_polling_duration: Option<u64>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    maintenance_info: Option<MaintenanceInfo>,
+    pub maintenance_info: Option<MaintenanceInfo>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
@@ -96,7 +96,7 @@ pub fn build_catalog() -> Catalog {
 }
 
 pub struct CatalogProvider {
-    catalog: Catalog,
+    pub catalog: Catalog,
 }
 
 impl CatalogProvider {

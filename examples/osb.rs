@@ -3,6 +3,7 @@ use actix_web::{guard, web, App, HttpResponse, HttpServer};
 use brokerapi::{binding, catalog, polling, service};
 
 const LOG_DEFAULT: &str = "%a %t %r %s %Ts";
+#[allow(unused)]
 const LOG_HEADERS: &str = "%a %t %r %s %Ts
             Headers:
                 X-Broker-API-Version: %{X-Broker-API-Version}i

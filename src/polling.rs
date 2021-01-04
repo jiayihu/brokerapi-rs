@@ -1,25 +1,25 @@
 use actix_web::{web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 
-/// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#request-1
+/// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#request-1>
 #[derive(Deserialize, Debug)]
 #[allow(unused)]
 pub struct LastOperationParams {
-    service_id: Option<String>,
-    plan_id: Option<String>,
-    operation: Option<String>,
+    pub service_id: Option<String>,
+    pub plan_id: Option<String>,
+    pub operation: Option<String>,
 }
 
-/// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#response-1
+/// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#response-1>
 #[derive(Serialize, Default, Debug)]
 pub struct ServiceInstanceLastOp {
-    state: LastOperationState,
+    pub state: LastOperationState,
     #[serde(skip_serializing_if = "Option::is_none")]
-    description: Option<String>,
+    pub description: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    instance_usable: Option<bool>,
+    pub instance_usable: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    update_repeatable: Option<bool>,
+    pub update_repeatable: Option<bool>,
 }
 
 #[derive(Serialize, Debug)]
@@ -50,12 +50,12 @@ pub async fn get_service_instance_last_operation(
     HttpResponse::Ok().json(response)
 }
 
-/// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#response-2
+/// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#response-2>
 #[derive(Serialize, Default, Debug)]
 struct ServiceBindingLastOp {
-    state: LastOperationState,
+    pub state: LastOperationState,
     #[serde(skip_serializing_if = "Option::is_none")]
-    description: Option<String>,
+    pub description: Option<String>,
 }
 
 pub async fn get_service_binding_state(

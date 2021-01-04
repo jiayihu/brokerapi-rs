@@ -12,64 +12,64 @@ pub enum BindingType {
     VolumeServices,
 }
 
-/// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#parameters-5
+/// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#parameters-5>
 #[derive(Deserialize, Debug)]
 #[allow(unused)]
 pub struct ProvisionParams {
-    accepts_incomplete: Option<bool>,
+    pub accepts_incomplete: Option<bool>,
 }
 
-/// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#body-8
+/// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#body-8>
 #[derive(Deserialize, Debug)]
 #[allow(unused)]
 pub struct BindingRequestBody {
-    service_id: String,
-    plan_id: String,
-    context: Option<HashMap<String, String>>,
-    bind_resource: Option<BindResource>,
-    parameters: Option<HashMap<String, String>>,
+    pub service_id: String,
+    pub plan_id: String,
+    pub context: Option<HashMap<String, String>>,
+    pub bind_resource: Option<BindResource>,
+    pub parameters: Option<HashMap<String, String>>,
 }
 
-/// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#bind-resource-object
+/// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#bind-resource-object>
 #[derive(Deserialize, Debug)]
 #[allow(unused)]
 pub struct BindResource {
-    app_guid: Option<String>,
-    route: Option<String>,
+    pub app_guid: Option<String>,
+    pub route: Option<String>,
 }
 
-/// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#body-9
+/// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#body-9>
 #[derive(Serialize, Default, Debug)]
 #[allow(unused)]
 pub struct Binding {
     #[serde(skip_serializing_if = "Option::is_none")]
-    metadata: Option<BindingMetadata>,
+    pub metadata: Option<BindingMetadata>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    credentials: Option<HashMap<String, String>>,
+    pub credentials: Option<HashMap<String, String>>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    syslog_drain_url: Option<String>,
+    pub syslog_drain_url: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    route_service_url: Option<String>,
+    pub route_service_url: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    volume_mounts: Option<VolumeMount>,
+    pub volume_mounts: Option<VolumeMount>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    endpoints: Option<Vec<Endpoint>>,
+    pub endpoints: Option<Vec<Endpoint>>,
 }
 
 #[derive(Serialize, Default, Debug)]
 #[allow(unused)]
 pub struct BindingMetadata {
-    expires_at: String,
+    pub expires_at: String,
 }
 
 #[derive(Serialize, Debug)]
 #[allow(unused)]
 pub struct VolumeMount {
-    driver: String,
-    container_dir: String,
-    mode: VolumeMode,
-    device_type: DeviceType,
-    device: Device,
+    pub driver: String,
+    pub container_dir: String,
+    pub mode: VolumeMode,
+    pub device_type: DeviceType,
+    pub device: Device,
 }
 
 #[derive(Serialize, Debug)]
@@ -90,16 +90,16 @@ pub enum DeviceType {
 #[derive(Serialize, Default, Debug)]
 #[allow(unused)]
 pub struct Device {
-    volume_id: String,
-    mount_config: Option<HashMap<String, String>>,
+    pub volume_id: String,
+    pub mount_config: Option<HashMap<String, String>>,
 }
 
 #[derive(Serialize, Default, Debug)]
 #[allow(unused)]
 pub struct Endpoint {
-    host: String,
-    ports: Vec<String>,
-    protocol: Option<Protocol>,
+    pub host: String,
+    pub ports: Vec<String>,
+    pub protocol: Option<Protocol>,
 }
 
 #[derive(Serialize, Debug)]
@@ -127,12 +127,12 @@ pub async fn put_binding(
     HttpResponse::Created().json(Binding::default())
 }
 
-/// https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#parameters-6
+/// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#parameters-6>
 #[derive(Deserialize, Debug)]
 #[allow(unused)]
 pub struct BindingFetchParams {
-    service: Option<String>,
-    plan_id: Option<String>,
+    pub service: Option<String>,
+    pub plan_id: Option<String>,
 }
 
 pub async fn get_binding(
