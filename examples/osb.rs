@@ -2,17 +2,35 @@ use actix_web::middleware::Logger;
 use actix_web::{guard, web, App, HttpResponse, HttpServer};
 use brokerapi::{binding, catalog, polling, service};
 
+const LOG_DEFAULT: &str = "%a %t %r %s %Ts";
+const LOG_HEADERS: &str = "%a %t %r %s %Ts
+            Headers:
+                X-Broker-API-Version: %{X-Broker-API-Version}i
+                X-Broker-API-Originating-Identity: %{X-Broker-API-Originating-Identity}i
+                X-Broker-API-Request-Identity: %{X-Broker-API-Request-Identity}i
+";
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     simple_logging::log_to_file("brokerapi.log", log::LevelFilter::Info)?;
 
     HttpServer::new(|| {
         App::new()
-            .wrap(Logger::new("%a %t %r %s %Ts"))
+            .wrap(Logger::new(LOG_DEFAULT))
             .data(catalog::CatalogProvider::new(catalog::build_catalog()))
             .service(
                 web::scope("/v2")
-                    .guard(guard::Header("X-Broker-API-Version", "2.16"))
+                    .guard(guard::fn_guard(|req| {
+                        match req.headers().get("X-Broker-API-Version") {
+                            Some(value) => value
+                                .to_str().ok()
+                                .and_then(|version| version.parse::<f32>().ok())
+                                .map_or(false, |version| {
+                                    version >= 2.14
+                                }),
+                            None => false
+                        }
+                    }))
                     .route("/catalog", web::get().to(catalog::get_catalog))
                     .service(
                 web::resource("/service_instances/{instance_id}")
