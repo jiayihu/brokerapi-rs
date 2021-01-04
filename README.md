@@ -1,3 +1,6 @@
+![](https://badgen.net/crates/v/brokerapi)
+![](https://docs.rs/brokerapi/badge.svg?version=0.1.0)
+
 A Rust crate for building faster [V2.16 Open Service Brokers](https://github.com/openservicebrokerapi/servicebroker/).
 
 
