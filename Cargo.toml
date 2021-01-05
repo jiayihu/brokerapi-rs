@@ -19,7 +19,6 @@ serde_json = "1.0.61"
 log = "0.4.11"
 
 [dev-dependencies]
-env_logger = "0.8.2"
 simple-logging = "2.0.2"
 
 [lib]

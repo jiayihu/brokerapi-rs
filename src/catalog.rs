@@ -42,7 +42,7 @@ pub enum Permission {
     VolumeMount,
 }
 
-#[derive(Serialize, Default)]
+#[derive(Serialize, Default, Clone)]
 pub struct ServicePlan {
     pub id: String,
     pub name: String,
@@ -62,49 +62,42 @@ pub struct ServicePlan {
     pub maintenance_info: Option<MaintenanceInfo>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct MaintenanceInfo {
     version: String,
     description: Option<String>,
 }
 
 pub async fn get_catalog(provider: web::Data<CatalogProvider>) -> impl Responder {
-    HttpResponse::Ok().json(provider.get_catalog())
-}
-
-pub fn build_catalog() -> Catalog {
-    let mut catalog = Catalog::default();
-
-    let mut free_plan = ServicePlan::default();
-    free_plan.id = "free".to_string();
-    free_plan.name = "free".to_string();
-    free_plan.description = "Free plan".to_string();
-    free_plan.maximum_polling_duration = Some(60);
-
-    let mut hello_wasi = Service::default();
-    hello_wasi.id = "hellowasi".to_string();
-    hello_wasi.name = "hellowasi".to_string();
-    hello_wasi.description = "Hello world in WASI".to_string();
-    hello_wasi.tags.push("wasi".to_string());
-    hello_wasi.requires.push(Permission::VolumeMount);
-    hello_wasi.bindable = true;
-    hello_wasi.plans.push(free_plan);
-
-    catalog.services.push(hello_wasi);
-
-    catalog
+    HttpResponse::Ok().json(&provider.catalog)
 }
 
 pub struct CatalogProvider {
+    plans: HashMap<String, ServicePlan>,
     pub catalog: Catalog,
 }
 
 impl CatalogProvider {
-    pub fn new(catalog: Catalog) -> Self {
-        CatalogProvider { catalog }
+    pub fn new() -> Self {
+        CatalogProvider {
+            plans: HashMap::new(),
+            catalog: Catalog::default(),
+        }
     }
 
-    pub fn get_catalog(&self) -> &Catalog {
-        &self.catalog
+    pub fn add_plan(&mut self, plan: ServicePlan) -> &Self {
+        self.plans.insert(plan.id.clone(), plan);
+
+        self
+    }
+
+    pub fn get_plan(&self, plan_id: &str) -> Option<&ServicePlan> {
+        self.plans.get(plan_id)
+    }
+
+    pub fn add_service(&mut self, service: Service) -> &Self {
+        self.catalog.services.push(service);
+
+        self
     }
 }

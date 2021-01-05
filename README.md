@@ -60,3 +60,16 @@ async fn main() -> std::io::Result<()> {
     .await
 }
 ```
+
+You can then test the broker using the `svcat` [CLI commands](https://svc-cat.io/docs/cli/). The following commands assume the broker is reaachable by using a local network IP `192.168.1.126:8080`.
+
+```console
+svcat register my-broker --url http://192.168.1.126 --scope cluster
+svcat get brokers
+```
+
+```
+      NAME       NAMESPACE              URL              STATUS
++--------------+-----------+---------------------------+--------+
+  fedra-broker               http://192.168.1.126:8080   Ready
+```

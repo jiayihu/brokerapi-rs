@@ -144,9 +144,18 @@ pub async fn get_binding(
     HttpResponse::Ok().json(Binding::default())
 }
 
+/// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#parameters-7>
+#[derive(Deserialize, Debug)]
+#[allow(unused)]
+pub struct BindingDeleteParams {
+    pub service_id: String,
+    pub plan_id: String,
+    pub accepts_incomplete: Option<bool>,
+}
+
 pub async fn delete_binding(
     web::Path((_instance_id, _binding_id)): web::Path<(String, String)>,
-    web::Query(params): web::Query<BindingFetchParams>,
+    web::Query(params): web::Query<BindingDeleteParams>,
 ) -> impl Responder {
     log::info!("params {:?}", params);
 
