@@ -1,8 +1,7 @@
-use actix_web::{web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-#[derive(Serialize, Default)]
+#[derive(Serialize, Default, Clone)]
 pub struct Catalog {
     pub services: Vec<Service>,
 }
@@ -10,7 +9,7 @@ pub struct Catalog {
 /// Service Offering
 ///
 /// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#service-offering-object>
-#[derive(Serialize, Default)]
+#[derive(Serialize, Default, Clone)]
 pub struct Service {
     pub name: String,
     pub id: String,
@@ -33,7 +32,7 @@ pub struct Service {
     pub plans: Vec<ServicePlan>,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Clone)]
 #[serde(rename_all = "snake_case")]
 #[allow(unused)]
 pub enum Permission {
@@ -66,38 +65,4 @@ pub struct ServicePlan {
 pub struct MaintenanceInfo {
     version: String,
     description: Option<String>,
-}
-
-pub async fn get_catalog(provider: web::Data<CatalogProvider>) -> impl Responder {
-    HttpResponse::Ok().json(&provider.catalog)
-}
-
-pub struct CatalogProvider {
-    plans: HashMap<String, ServicePlan>,
-    pub catalog: Catalog,
-}
-
-impl CatalogProvider {
-    pub fn new() -> Self {
-        CatalogProvider {
-            plans: HashMap::new(),
-            catalog: Catalog::default(),
-        }
-    }
-
-    pub fn add_plan(&mut self, plan: ServicePlan) -> &Self {
-        self.plans.insert(plan.id.clone(), plan);
-
-        self
-    }
-
-    pub fn get_plan(&self, plan_id: &str) -> Option<&ServicePlan> {
-        self.plans.get(plan_id)
-    }
-
-    pub fn add_service(&mut self, service: Service) -> &Self {
-        self.catalog.services.push(service);
-
-        self
-    }
 }

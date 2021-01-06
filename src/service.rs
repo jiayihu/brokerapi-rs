@@ -29,7 +29,9 @@ pub struct ServiceInstanceRequestBody {
 #[derive(Serialize, Default, Debug)]
 #[allow(unused)]
 pub struct CreatedServiceIstance {
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub dashboard_url: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub operation: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub metadata: Option<ServiceInstanceMetadata>,
@@ -39,16 +41,6 @@ pub struct CreatedServiceIstance {
 #[allow(unused)]
 pub struct ServiceInstanceMetadata {
     pub labels: HashMap<String, String>,
-}
-
-pub async fn put_service_instance(
-    _instance_id: web::Path<String>,
-    web::Query(params): web::Query<ProvisionParams>,
-    web::Json(body): web::Json<ServiceInstanceRequestBody>,
-) -> impl Responder {
-    log::info!("params {:?}, body:\n{:#?}", params, body);
-
-    HttpResponse::Created().json(CreatedServiceIstance::default())
 }
 
 /// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#parameters-3>
@@ -74,7 +66,7 @@ pub struct ServiceIstance {
 }
 
 pub async fn get_service_instance(
-    _instance_id: web::Path<String>,
+    web::Path(_instance_id): web::Path<String>,
     web::Query(params): web::Query<ServiceFetchParams>,
 ) -> impl Responder {
     log::info!("params {:?}", params);
@@ -105,7 +97,7 @@ pub struct PreviousValues {
 }
 
 pub async fn patch_service_instance(
-    _instance_id: web::Path<String>,
+    web::Path(_instance_id): web::Path<String>,
     web::Query(params): web::Query<ProvisionParams>,
     web::Json(body): web::Json<ServiceUpdateRequestBody>,
 ) -> impl Responder {
@@ -124,7 +116,7 @@ pub struct ServiceDeleteParams {
 }
 
 pub async fn delete_service_instance(
-    _instance_id: web::Path<String>,
+    web::Path(_instance_id): web::Path<String>,
     web::Query(params): web::Query<ServiceDeleteParams>,
 ) -> impl Responder {
     log::info!("params {:?}", params);
