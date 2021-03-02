@@ -2,7 +2,7 @@ use actix_web::{web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 
 /// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#request-1>
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 #[allow(unused)]
 pub struct LastOperationParams {
     pub service_id: Option<String>,
@@ -11,7 +11,7 @@ pub struct LastOperationParams {
 }
 
 /// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#response-1>
-#[derive(Serialize, Default, Debug)]
+#[derive(Serialize, Default, Debug, Clone)]
 pub struct ServiceInstanceLastOp {
     pub state: LastOperationState,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -22,7 +22,7 @@ pub struct ServiceInstanceLastOp {
     pub update_repeatable: Option<bool>,
 }
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Debug, Clone)]
 #[serde(rename_all = "lowercase")]
 #[allow(unused)]
 pub enum LastOperationState {
@@ -51,7 +51,7 @@ pub async fn get_service_instance_last_operation(
 }
 
 /// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#response-2>
-#[derive(Serialize, Default, Debug)]
+#[derive(Serialize, Default, Debug, Clone)]
 struct ServiceBindingLastOp {
     pub state: LastOperationState,
     #[serde(skip_serializing_if = "Option::is_none")]

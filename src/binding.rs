@@ -13,14 +13,14 @@ pub enum BindingType {
 }
 
 /// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#parameters-5>
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 #[allow(unused)]
 pub struct ProvisionParams {
     pub accepts_incomplete: Option<bool>,
 }
 
 /// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#body-8>
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 #[allow(unused)]
 pub struct BindingRequestBody {
     pub service_id: String,
@@ -31,7 +31,7 @@ pub struct BindingRequestBody {
 }
 
 /// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#bind-resource-object>
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 #[allow(unused)]
 pub struct BindResource {
     pub app_guid: Option<String>,
@@ -39,7 +39,7 @@ pub struct BindResource {
 }
 
 /// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#body-9>
-#[derive(Serialize, Default, Debug)]
+#[derive(Serialize, Default, Debug, Clone)]
 #[allow(unused)]
 pub struct Binding {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -56,13 +56,13 @@ pub struct Binding {
     pub endpoints: Option<Vec<Endpoint>>,
 }
 
-#[derive(Serialize, Default, Debug)]
+#[derive(Serialize, Default, Debug, Clone)]
 #[allow(unused)]
 pub struct BindingMetadata {
     pub expires_at: String,
 }
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Debug, Clone)]
 #[allow(unused)]
 pub struct VolumeMount {
     pub driver: String,
@@ -72,7 +72,7 @@ pub struct VolumeMount {
     pub device: Device,
 }
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Debug, Clone)]
 #[serde(rename_all = "lowercase")]
 #[allow(unused)]
 pub enum VolumeMode {
@@ -80,21 +80,21 @@ pub enum VolumeMode {
     RW,
 }
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Debug, Clone)]
 #[serde(rename_all = "snake_case")]
 #[allow(unused)]
 pub enum DeviceType {
     Shared,
 }
 
-#[derive(Serialize, Default, Debug)]
+#[derive(Serialize, Default, Debug, Clone)]
 #[allow(unused)]
 pub struct Device {
     pub volume_id: String,
     pub mount_config: Option<HashMap<String, String>>,
 }
 
-#[derive(Serialize, Default, Debug)]
+#[derive(Serialize, Default, Debug, Clone)]
 #[allow(unused)]
 pub struct Endpoint {
     pub host: String,
@@ -102,7 +102,7 @@ pub struct Endpoint {
     pub protocol: Option<Protocol>,
 }
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Debug, Clone)]
 #[serde(rename_all = "lowercase")]
 #[allow(unused)]
 pub enum Protocol {
@@ -128,7 +128,7 @@ pub async fn put_binding(
 }
 
 /// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#parameters-6>
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 #[allow(unused)]
 pub struct BindingFetchParams {
     pub service: Option<String>,
@@ -145,7 +145,7 @@ pub async fn get_binding(
 }
 
 /// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#parameters-7>
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 #[allow(unused)]
 pub struct BindingDeleteParams {
     pub service_id: String,

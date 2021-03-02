@@ -6,14 +6,14 @@ use std::collections::HashMap;
 use crate::catalog::MaintenanceInfo;
 
 /// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#parameters-2>
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 #[allow(unused)]
 pub struct ProvisionParams {
     pub accepts_incomplete: Option<bool>,
 }
 
 /// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#body-3>
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 #[allow(unused)]
 pub struct ServiceInstanceRequestBody {
     pub service_id: String,
@@ -26,7 +26,7 @@ pub struct ServiceInstanceRequestBody {
 }
 
 /// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#body-4>
-#[derive(Serialize, Default, Debug)]
+#[derive(Serialize, Default, Debug, Clone)]
 #[allow(unused)]
 pub struct CreatedServiceIstance {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -37,14 +37,14 @@ pub struct CreatedServiceIstance {
     pub metadata: Option<ServiceInstanceMetadata>,
 }
 
-#[derive(Serialize, Default, Debug)]
+#[derive(Serialize, Default, Debug, Clone)]
 #[allow(unused)]
 pub struct ServiceInstanceMetadata {
     pub labels: HashMap<String, String>,
 }
 
 /// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#parameters-3>
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 #[allow(unused)]
 pub struct ServiceFetchParams {
     pub service: Option<String>,
@@ -52,7 +52,7 @@ pub struct ServiceFetchParams {
 }
 
 /// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#body-5>
-#[derive(Serialize, Default, Debug)]
+#[derive(Serialize, Default, Debug, Clone)]
 #[allow(unused)]
 pub struct ServiceIstance {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -75,7 +75,7 @@ pub async fn get_service_instance(
 }
 
 /// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#body-7>
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 #[allow(unused)]
 pub struct ServiceUpdateRequestBody {
     pub service_id: String,
@@ -86,7 +86,7 @@ pub struct ServiceUpdateRequestBody {
     pub maintenance_info: Option<MaintenanceInfo>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 #[allow(unused)]
 pub struct PreviousValues {
     pub service_id: Option<String>,
@@ -107,7 +107,7 @@ pub async fn patch_service_instance(
 }
 
 /// <https://github.com/openservicebrokerapi/servicebroker/blob/v2.16/spec.md#parameters-8>
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 #[allow(unused)]
 pub struct ServiceDeleteParams {
     pub service_id: String,
